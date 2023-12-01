@@ -1,4 +1,4 @@
-package be.vreijsen.aoc
+package be.vreijsen.aoc.days
 
 import be.vreijsen.aoc.utils.PuzzleUtils
 
