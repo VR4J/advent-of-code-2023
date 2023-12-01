@@ -27,22 +27,20 @@ object Day01 {
     }
 
     fun runPartOne(input: List<String>): Int {
-        val values = input.stream()
-            .map { it.filter { char -> char.isDigit() } }
-            .map { "${it.first()}" + "${it.last()}" }
-            .map { it.toInt() }
-            .toList()
-
-        return values.sum()
+        return run(input) { it }
     }
 
     fun runPartTwo(input: List<String>): Int {
-        val values = input.stream()
-            .map {
-                digitsByWord.entries.fold(it) {
-                  txt, (key, value) -> txt.replace(key, value)
-                }
+        return run(input) {
+            digitsByWord.entries.fold(it) {
+              txt, (key, value) -> txt.replace(key, value)
             }
+        }
+    }
+
+    private fun run(input: List<String>, transform: (String) -> String): Int {
+        val values = input.stream()
+            .map { transform(it) }
             .map { it.filter { char -> char.isDigit() } }
             .map { "${it.first()}" + "${it.last()}" }
             .map { it.toInt() }
