@@ -26,6 +26,10 @@ data class Set(val red: Int = 0, val green: Int = 0, val blue: Int = 0) {
         }
     }
 
+    fun power(): Int {
+        return red * green * blue
+    }
+
     fun inBagContent(bagContent: Bag): Boolean {
         return bagContent.red >= this.red
                 && bagContent.green >= this.green
@@ -69,28 +73,24 @@ object Day02 {
         val resultPartOne = runPartOne(input, bag);
         val resultPartTwo = runPartTwo(input)
 
-        println("Sum of all calibration values pt.1: $resultPartOne")
-        println("Sum of all calibration values pt.2: $resultPartTwo")
+        println("Sum of all possible game ids (pt.1): $resultPartOne")
+        println("Sum of all minimum cube sets (pt.2): $resultPartTwo")
     }
 
     fun runPartOne(input: List<String>, bag: Bag): Int {
-        val games = input.asSequence()
-            .map { Game.parse(it) }
+        return input.asSequence()
+            .map(Game::parse)
             .filter { it.sets.all { set -> set.inBagContent(bag) } }
-            .map { it.id }
-            .map { it.toInt() }
-            .toList()
-
-        return games.sum()
+            .map(Game::id)
+            .map(String::toInt)
+            .sum()
     }
 
     fun runPartTwo(input: List<String>): Int {
-        val games = input.asSequence()
-            .map { Game.parse(it) }
-            .map { it.minCubeSet() }
-            .map { it.red * it.green * it.blue }
-            .toList()
-
-        return games.sum()
+        return input
+            .map(Game::parse)
+            .map(Game::minCubeSet)
+            .map(Set::power)
+            .sum()
     }
 }
