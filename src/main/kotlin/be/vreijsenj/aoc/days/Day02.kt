@@ -74,7 +74,7 @@ object Day02 {
     }
 
     fun runPartOne(input: List<String>, bag: Bag): Int {
-        val games = input
+        val games = input.asSequence()
             .map { Game.parse(it) }
             .filter { it.sets.all { set -> set.inBagContent(bag) } }
             .map { it.id }
@@ -85,7 +85,7 @@ object Day02 {
     }
 
     fun runPartTwo(input: List<String>): Int {
-        val games = input
+        val games = input.asSequence()
             .map { Game.parse(it) }
             .map { it.minCubeSet() }
             .map { it.red * it.green * it.blue }
