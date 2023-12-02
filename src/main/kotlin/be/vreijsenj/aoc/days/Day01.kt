@@ -39,7 +39,7 @@ object Day01 {
     }
 
     private fun run(input: List<String>, transform: (String) -> String): Int {
-        val values = input.stream()
+        val values = input
             .map { transform(it) }
             .map { it.filter { char -> char.isDigit() } }
             .map { "${it.first()}" + "${it.last()}" }
