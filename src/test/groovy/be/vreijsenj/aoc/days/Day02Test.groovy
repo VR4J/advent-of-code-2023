@@ -34,7 +34,7 @@ class Day02Test extends Specification {
         when: "the games are played"
             def result = new Day02().runPartOne(games, bagContent)
 
-        then: "the sum of the possible game ids are returned"
+        then: "the sum of the possible game ids matches the example answer"
             result == 8
     }
 
@@ -51,7 +51,7 @@ class Day02Test extends Specification {
         when: "the games are played"
             def result = new Day02().runPartTwo(games)
 
-        then: "the sum of the power of the minimum set of cubes is returned"
+        then: "the sum of the power of the minimum set of cubes matches the example answer"
             result == 2286
     }
 }

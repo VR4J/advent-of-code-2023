@@ -23,7 +23,7 @@ class Day03Test extends Specification {
         when: "the part numbers are identified"
             def result = new Day03().runPartOne(input)
 
-        then: "the sum is equal to the given example"
+        then: "the sum matches the example answer"
             result == 4361
     }
 
@@ -45,7 +45,7 @@ class Day03Test extends Specification {
         when: "the gear ratios are identified"
             def result = new Day03().runPartTwo(input)
 
-        then: "the sum is equal to the given example"
+        then: "the sum matches the example answer"
             result == 467835
     }
 
