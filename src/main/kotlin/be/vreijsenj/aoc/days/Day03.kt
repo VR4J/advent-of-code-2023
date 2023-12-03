@@ -83,7 +83,7 @@ object Day03 {
 
                 current.symbols
                     .filter { it.value == "*" }
-                    .map { getGear(it, previous.numbers, current.numbers, next.numbers) }
+                    .map { getGears(it, previous.numbers, current.numbers, next.numbers) }
                     .filter { it.isNotEmpty() }
                     .map { it.first.value * it.last.value }
             }
@@ -98,7 +98,7 @@ object Day03 {
         return Triple(previous, current, next)
     }
 
-    private fun getGear(symbol: Symbol, previous: List<PartNumber>, current: List<PartNumber>, next: List<PartNumber>): List<PartNumber> {
+    private fun getGears(symbol: Symbol, previous: List<PartNumber>, current: List<PartNumber>, next: List<PartNumber>): List<PartNumber> {
         val matches = mutableListOf<PartNumber>()
 
         previous.filter { it.isAdjacentTo(symbol.location) }
