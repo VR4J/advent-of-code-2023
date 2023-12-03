@@ -62,14 +62,10 @@ object Day03 {
 
         return schematic.indices.asSequence()
             .flatMap {  index ->
-                val previous = schematic.getOrNull(index - 1)
-                val current = schematic[index]
-                val next = schematic.getOrNull(index + 1)
+                val (previous, current, next) = getSurrounding(schematic, index)
 
                 current.numbers.filter {
-                    it.isValid(previous?.symbols ?: emptyList())
-                            || it.isValid(current.symbols)
-                            || it.isValid(next?.symbols ?: emptyList())
+                    it.isValid(previous.symbols) || it.isValid(current.symbols) || it.isValid(next.symbols)
                 }
             }
             .map(PartNumber::value)
@@ -83,9 +79,7 @@ object Day03 {
 
         return schematic.indices.asSequence()
             .flatMap {  index ->
-                val previous = schematic.getOrElse(index - 1) { EngineSchematicLine.EMPTY }
-                val current = schematic[index]
-                val next = schematic.getOrElse(index + 1) { EngineSchematicLine.EMPTY }
+                val (previous, current, next) = getSurrounding(schematic, index)
 
                 current.symbols
                     .filter { it.value == "*" }
@@ -94,6 +88,14 @@ object Day03 {
                     .map { it.first.value * it.last.value }
             }
             .sum()
+    }
+
+    private fun getSurrounding(schematic: List<EngineSchematicLine>, index: Int): Triple<EngineSchematicLine, EngineSchematicLine, EngineSchematicLine> {
+        val previous = schematic.getOrElse(index - 1) { EngineSchematicLine.EMPTY }
+        val current = schematic[index]
+        val next = schematic.getOrElse(index + 1) { EngineSchematicLine.EMPTY }
+
+        return Triple(previous, current, next)
     }
 
     private fun getGear(symbol: Symbol, previous: List<PartNumber>, current: List<PartNumber>, next: List<PartNumber>): List<PartNumber> {
