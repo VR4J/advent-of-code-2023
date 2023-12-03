@@ -22,8 +22,8 @@ object Day01 {
         val resultPartOne = runPartOne(input);
         val resultPartTwo = runPartTwo(input);
 
-        println("Sum of all calibration values pt.1: $resultPartOne")
-        println("Sum of all calibration values pt.2: $resultPartTwo")
+        println("Sum of all calibration values (pt.1): $resultPartOne")
+        println("Sum of all calibration values (pt.2): $resultPartTwo")
     }
 
     fun runPartOne(input: List<String>): Int {

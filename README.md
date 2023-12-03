@@ -3,5 +3,6 @@
 Written in [Kotlin](https://kotlinlang.org/).
 
 ### Quick navigation:
-* [Day 1](./src/main/kotlin/be/vreijsenj/aoc/days/Day01.kt)
-* [Day 2](./src/main/kotlin/be/vreijsenj/aoc/days/Day02.kt)
+* Day 1 ([source](./src/main/kotlin/be/vreijsenj/aoc/days/Day01.kt), [test](./src/test/groovy/be/vreijsenj/aoc/days/Day01Test.groovy))
+* Day 2 ([source](./src/main/kotlin/be/vreijsenj/aoc/days/Day02.kt), [test](./src/test/groovy/be/vreijsenj/aoc/days/Day02Test.groovy))
+* Day 3 ([source](./src/main/kotlin/be/vreijsenj/aoc/days/Day03.kt), [test](./src/test/groovy/be/vreijsenj/aoc/days/Day03Test.groovy))
