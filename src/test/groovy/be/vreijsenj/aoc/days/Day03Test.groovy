@@ -29,24 +29,24 @@ class Day03Test extends Specification {
 
     def "returns the sum of all gear ratios"() {
         given: "the engine schematic"
-        def input = [
-                "467..114..",
-                "...*......",
-                "..35..633.",
-                "......#...",
-                "617*......",
-                ".....+.58.",
-                "..592.....",
-                "......755.",
-                "...\$.*....",
-                ".664.598.."
-        ]
+            def input = [
+                    "467..114..",
+                    "...*......",
+                    "..35..633.",
+                    "......#...",
+                    "617*......",
+                    ".....+.58.",
+                    "..592.....",
+                    "......755.",
+                    "...\$.*....",
+                    ".664.598.."
+            ]
 
         when: "the gear ratios are identified"
-        def result = new Day03().runPartTwo(input)
+            def result = new Day03().runPartTwo(input)
 
         then: "the sum is equal to the given example"
-        result == 467835
+            result == 467835
     }
 
     def "reads numbers from schematic line"() {
