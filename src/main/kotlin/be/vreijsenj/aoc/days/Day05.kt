@@ -3,6 +3,7 @@ package be.vreijsenj.aoc.days
 import be.vreijsenj.aoc.utils.PuzzleUtils
 import kotlinx.coroutines.*
 import java.time.Instant
+import kotlin.time.measureTime
 
 data class Almanac(
     val soil: List<Mapping>,
@@ -84,18 +85,17 @@ object Day05 {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val now = Instant.now()
+        val elapsed = measureTime {
+            val input = PuzzleUtils.getInputAsText(5, 1)
 
-        val input = PuzzleUtils.getInputAsText(5, 1)
+            val resultPartOne = runPartOne(input)
+            val resultPartTwo = runPartTwo(input)
 
-        val resultPartOne = runPartOne(input)
-        val resultPartTwo = runPartTwo(input)
+            println("Closest seed location (pt.1): $resultPartOne")
+            println("Closest seed location (pt.2): $resultPartTwo")
+        }
 
-        val end = Instant.now()
-
-        println("Took: ${end.epochSecond - now.epochSecond}s")
-        println("Closest seed location (pt.1): $resultPartOne")
-        println("Closest seed location (pt.2): $resultPartTwo")
+        println("Took: $elapsed")
     }
 
     fun runPartOne(input: String): Long {

@@ -2,6 +2,7 @@ package be.vreijsenj.aoc.days
 
 import be.vreijsenj.aoc.utils.PuzzleUtils
 import kotlin.math.max
+import kotlin.time.measureTime
 
 data class Bag(val red: Int = 0, val green: Int = 0, val blue: Int = 0) { }
 data class Set(val red: Int = 0, val green: Int = 0, val blue: Int = 0) {
@@ -67,14 +68,18 @@ object Day02 {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val bag = Bag(red = 12, green = 13, blue = 14)
-        val input = PuzzleUtils.getInput(2, 1)
+        val elapsed = measureTime {
+            val bag = Bag(red = 12, green = 13, blue = 14)
+            val input = PuzzleUtils.getInput(2, 1)
 
-        val resultPartOne = runPartOne(input, bag);
-        val resultPartTwo = runPartTwo(input)
+            val resultPartOne = runPartOne(input, bag);
+            val resultPartTwo = runPartTwo(input)
 
-        println("Sum of all possible game ids (pt.1): $resultPartOne")
-        println("Sum of all minimum cube sets (pt.2): $resultPartTwo")
+            println("Sum of all possible game ids (pt.1): $resultPartOne")
+            println("Sum of all minimum cube sets (pt.2): $resultPartTwo")
+        }
+
+        println("Took $elapsed")
     }
 
     fun runPartOne(input: List<String>, bag: Bag): Int {

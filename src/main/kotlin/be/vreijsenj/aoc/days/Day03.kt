@@ -1,6 +1,7 @@
 package be.vreijsenj.aoc.days
 
 import be.vreijsenj.aoc.utils.PuzzleUtils
+import kotlin.time.measureTime
 
 data class EngineSchematicLine(val numbers: List<PartNumber>, val symbols: List<Symbol>) {
     companion object {
@@ -46,13 +47,17 @@ object Day03 {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val input = PuzzleUtils.getInput(3, 1)
+        val elapsed = measureTime {
+            val input = PuzzleUtils.getInput(3, 1)
 
-        val resultPartOne = runPartOne(input)
-        val resultPartTwo = runPartTwo(input)
+            val resultPartOne = runPartOne(input)
+            val resultPartTwo = runPartTwo(input)
 
-        println("Sum of all engine parts (pt.1): $resultPartOne")
-        println("Sum of all gear ratios (pt.2): $resultPartTwo")
+            println("Sum of all engine parts (pt.1): $resultPartOne")
+            println("Sum of all gear ratios (pt.2): $resultPartTwo")
+        }
+
+        println("Took $elapsed")
     }
 
     fun runPartOne(input: List<String>): Int {

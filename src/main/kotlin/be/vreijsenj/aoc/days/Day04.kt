@@ -2,6 +2,7 @@ package be.vreijsenj.aoc.days
 
 import be.vreijsenj.aoc.utils.PuzzleUtils
 import org.codehaus.groovy.runtime.DefaultGroovyMethods.power
+import kotlin.time.measureTime
 
 data class ScratchCard(val id: Int, val numbers: List<Int>, val winning: List<Int>, var matches: Int = 0) {
     companion object {
@@ -35,13 +36,17 @@ object Day04 {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val input = PuzzleUtils.getInput(4, 1)
+        val elapsed = measureTime {
+            val input = PuzzleUtils.getInput(4, 1)
 
-        val resultPartOne = runPartOne(input)
-        val resultPartTwo = runPartTwo(input)
+            val resultPartOne = runPartOne(input)
+            val resultPartTwo = runPartTwo(input)
 
-        println("Sum of all scratch card points (pt.1): $resultPartOne")
-        println("Sum of all scratch cards (pt.2): $resultPartTwo")
+            println("Sum of all scratch card points (pt.1): $resultPartOne")
+            println("Sum of all scratch cards (pt.2): $resultPartTwo")
+        }
+
+        println("Took: $elapsed")
     }
 
     fun runPartOne(input: List<String>): Int {

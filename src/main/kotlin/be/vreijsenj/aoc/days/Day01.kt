@@ -1,6 +1,7 @@
 package be.vreijsenj.aoc.days
 
 import be.vreijsenj.aoc.utils.PuzzleUtils
+import kotlin.time.measureTime
 
 object Day01 {
     val digitsByWord: Map<String, String> = mapOf(
@@ -17,13 +18,17 @@ object Day01 {
 
     @JvmStatic
     fun main(args: Array<String>) {
-        val input = PuzzleUtils.getInput(1, 1)
+        val elapsed = measureTime {
+            val input = PuzzleUtils.getInput(1, 1)
 
-        val resultPartOne = runPartOne(input);
-        val resultPartTwo = runPartTwo(input);
+            val resultPartOne = runPartOne(input);
+            val resultPartTwo = runPartTwo(input);
 
-        println("Sum of all calibration values (pt.1): $resultPartOne")
-        println("Sum of all calibration values (pt.2): $resultPartTwo")
+            println("Sum of all calibration values (pt.1): $resultPartOne")
+            println("Sum of all calibration values (pt.2): $resultPartTwo")
+        }
+
+        println("Took $elapsed")
     }
 
     fun runPartOne(input: List<String>): Int {
