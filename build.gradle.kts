@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     implementation("org.apache.groovy:groovy:4.0.16")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     testImplementation(kotlin("test"))
     testImplementation("org.spockframework:spock-core:2.3-groovy-4.0")
