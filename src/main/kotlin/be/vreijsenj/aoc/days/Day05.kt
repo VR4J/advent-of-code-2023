@@ -1,18 +1,17 @@
 package be.vreijsenj.aoc.days
 
-import be.vreijsenj.aoc.days.Day05.pmap
 import be.vreijsenj.aoc.utils.PuzzleUtils
 import kotlinx.coroutines.*
 import java.time.Instant
 
 data class Almanac(
     val soil: List<Mapping>,
-    var fertilizer: List<Mapping>,
-    var water: List<Mapping>,
-    var light: List<Mapping>,
-    var temperature: List<Mapping>,
-    var humidity: List<Mapping>,
-    var location: List<Mapping>
+    val fertilizer: List<Mapping>,
+    val water: List<Mapping>,
+    val light: List<Mapping>,
+    val temperature: List<Mapping>,
+    val humidity: List<Mapping>,
+    val location: List<Mapping>
 ) {
     companion object {
         fun parse(input: String): Almanac {
@@ -31,17 +30,16 @@ data class Almanac(
             return input.split("""\n(\s+)?\n""".toRegex())
                 .filter { it.contains(name) }
                 .flatMap { it.lines() }
-                .filter { ! it.contains(name) }
+                .drop(1)
                 .filter { it.isNotBlank() }
                 .map { Mapping.parse(it) }
         }
     }
 }
-data class Seed(
-    val id: Long,
-    var location: Long
-) {
+data class Seed(val id: Long, val location: Long) {
     companion object {
+        val RANGE_PATTERN = """\d+\s\d+""".toRegex()
+
         @JvmStatic
         fun parse(id: Long, almanac: Almanac): Seed {
             val soil = getMappingValue(id, almanac.soil)
@@ -113,17 +111,15 @@ object Day05 {
     fun runPartTwo(input: String): Long {
         val almanac = Almanac.parse(input)
 
-        val SEED_RANGE_PATTERN = """\d+\s\d+""".toRegex()
-
-        val ranges = SEED_RANGE_PATTERN.findAll(input.lines().first)
+        val ranges = Seed.RANGE_PATTERN.findAll(input.lines().first)
             .map { it.value.split(" ") }
-            .map { LongRange(it.first.toLong(), it.first.toLong() + it.last.toLong()) }
+            .map { it.first.toLong()..it.first.toLong() + it.last.toLong() }
             .toList()
 
         return runBlocking(Dispatchers.Default) {
             ranges
-                .pmap {
-                    it.minOf { Seed.parse(it, almanac).location }
+                .pmap { range ->
+                    range.minOf { Seed.parse(it, almanac).location }
                 }
                 .min()
         }
