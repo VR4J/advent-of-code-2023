@@ -2,7 +2,7 @@ package be.vreijsenj.aoc.days
 
 import be.vreijsenj.aoc.utils.PuzzleUtils
 import kotlinx.coroutines.*
-import java.time.Instant
+import kotlin.math.min
 import kotlin.time.measureTime
 
 data class Almanac(
@@ -119,7 +119,9 @@ object Day05 {
         return runBlocking(Dispatchers.Default) {
             ranges
                 .pmap { range ->
-                    range.minOf { Seed.parse(it, almanac).location }
+                    range.reduce { c, n ->
+                        min(Seed.parse(c, almanac).location, Seed.parse(n, almanac).location)
+                    }
                 }
                 .min()
         }
