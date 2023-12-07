@@ -21,6 +21,9 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+    testLogging {
+        exceptionFormat("full")
+    }
 }
 
 kotlin {
