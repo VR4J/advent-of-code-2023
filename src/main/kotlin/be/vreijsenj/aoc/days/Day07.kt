@@ -5,62 +5,51 @@ import java.lang.RuntimeException
 import kotlin.time.measureTime
 
 enum class Type(val strength: Int, val isPresent: (occurrences: Map<Int, Int>, jokers: Int) -> Boolean) {
-    FIVE_OF_A_KIND(7) { occurrences, jokers ->
-        return occurrences.any { it.value == (5 - jokers) }
-    },
-    FOUR_OF_A_KIND(6) { occurrences, jokers ->
-        return occurrences.any { it.value == (4 - jokers) }
-    },
-    FULL_HOUSE(5) { occurrences, jokers ->
+    FIVE_OF_A_KIND(7, { occurrences, jokers ->
+        occurrences.any { it.value == (5 - jokers) }
+    }),
+    FOUR_OF_A_KIND(6, { occurrences, jokers ->
+        occurrences.any { it.value == (4 - jokers) }
+    }),
+    FULL_HOUSE(5, { occurrences, jokers ->
         if(jokers == 0) {
-            return occurrences.containsValue(3) && occurrences.containsValue(2)
+            occurrences.containsValue(3) && occurrences.containsValue(2)
+        } else if(jokers == 1) {
+            occurrences.count { it.value == 2 } == 2
+        } else if(jokers == 2) {
+            occurrences.count { it.value == 2 } >= 1
+        } else {
+            // with three or more jokers you will always have four of a kind.
+            false
         }
-
-        if(jokers == 1) {
-            return occurrences.count { it.value == 2 } == 2
-        }
-
-        if(jokers == 2) {
-            return occurrences.count { it.value == 2 } >= 1
-        }
-
-        // with three or more jokers you will always have four of a kind.
-        return false
-    },
-    THREE_OF_A_KIND(4) { occurrences, jokers ->
-        return occurrences.any { it.value == (3 - jokers) }
-    },
-    TWO_PAIRS(3) { occurrences, jokers ->
+    }),
+    THREE_OF_A_KIND(4, { occurrences, jokers ->
+        occurrences.any { it.value == (3 - jokers) }
+    }),
+    TWO_PAIRS(3, { occurrences, jokers ->
         if(jokers == 0) {
-            return occurrences.count { it.value == 2 } == 2
+            occurrences.count { it.value == 2 } == 2
+        } else if(jokers == 1) {
+            occurrences.containsValue(1) && occurrences.containsValue(2)
+        } else {
+            // with two or more jokers you will always have three of a kind 
+            false
         }
-
-        if(jokers == 1) {
-            return occurrences.containsValue(1) && occurrences.containsValue(2)
-        }
-
-        // with two or more jokers you will always have three of a kind 
-        return false
-    },
-    ONE_PAIR(2) { occurrences, jokers ->
+    }),
+    ONE_PAIR(2, { occurrences, jokers ->
         if(jokers == 0) {
-            return occurrences.count { it.value == 2 } == 1
+            occurrences.count { it.value == 2 } == 1
+        } else { 
+            true
         }
-
-        if(jokers == 1) 
-            return true
-        }
-
-        // with two or more jokers you will always have two pairs
-        return 
-    },
-    HIGHEST_CARD(1) { occurrences, jokers ->
+    }),
+    HIGHEST_CARD(1, { occurrences, jokers ->
         if(jokers > 0) {
-            return false
+            false
+        } else {
+            true
         }
-        
-        return true
-    }
+    })
 }
 
 data class Hand(
