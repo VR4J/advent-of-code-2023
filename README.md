@@ -1,4 +1,5 @@
 # Advent of Code - 2023
+![badge](https://github.com/VR4J/advent-of-code-2023/actions/workflows/test.yml/badge.svg?branch=main)
 
 Written in [Kotlin](https://kotlinlang.org/).
 
