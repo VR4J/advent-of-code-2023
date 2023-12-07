@@ -1,18 +1,14 @@
 package be.vreijsenj.aoc.days
 
+import be.vreijesnj.aoc.utils.PuzzleUtils
+
 import spock.lang.Specification
 
 class Day07Test extends Specification {
 
     def "returns total winnings of all hands"() {
         given: "the camel card hands"
-            def input = [
-                    "32T3K 765",
-                    "T55J5 684",
-                    "KK677 28",
-                    "KTJJT 220",
-                    "QQQJA 483",
-            ]
+            def input = PuzzleUtils.getInput(7, 1)
 
         when: "the games are played"
             def result = new Day07().runPartOne(input)
@@ -21,4 +17,3 @@ class Day07Test extends Specification {
             result == 6440
     }
 }
-
