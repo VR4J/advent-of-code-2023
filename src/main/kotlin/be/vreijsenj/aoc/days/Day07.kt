@@ -7,12 +7,10 @@ import kotlin.time.measureTime
 enum class Type(val strength: Int, val isPresent: (occurrences: Map<Int, Int>, jokers: Int) -> Boolean) {
     FIVE_OF_A_KIND(7) { occurrences, jokers ->
         return occurrences.any { it.value == (5 - jokers) }
-    }
-
+    },
     FOUR_OF_A_KIND(6) { occurrences, jokers ->
         return occurrences.any { it.value == (4 - jokers) }
-    }
-
+    },
     FULL_HOUSE(5) { occurrences, jokers ->
         if(jokers == 0) {
             return occurrences.containsValue(3) && occurrences.containsValue(2)
@@ -28,12 +26,10 @@ enum class Type(val strength: Int, val isPresent: (occurrences: Map<Int, Int>, j
 
         // with three or more jokers you will always have four of a kind.
         return false
-    }
-
+    },
     THREE_OF_A_KIND(4) { occurrences, jokers ->
         return occurrences.any { it.value == (3 - jokers) }
-    }
-
+    },
     TWO_PAIRS(3) { occurrences, jokers ->
         if(jokers == 0) {
             return occurrences.count { it.value == 2 } == 2
@@ -45,8 +41,7 @@ enum class Type(val strength: Int, val isPresent: (occurrences: Map<Int, Int>, j
 
         // with two or more jokers you will always have three of a kind 
         return false
-    }
-
+    },
     ONE_PAIR(2) { occurrences, jokers ->
         if(jokers == 0) {
             return occurrences.count { it.value == 2 } == 1
@@ -58,8 +53,7 @@ enum class Type(val strength: Int, val isPresent: (occurrences: Map<Int, Int>, j
 
         // with two or more jokers you will always have two pairs
         return 
-    }
-
+    },
     HIGHEST_CARD(1) { occurrences, jokers ->
         if(jokers > 0) {
             return false
