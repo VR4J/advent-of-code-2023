@@ -6,7 +6,7 @@ import kotlin.time.measureTime
 
 enum class Type(val strength: Int, val isPresent: (occurrences: Map<Int, Int>, jokers: Int) -> Boolean) {
     FIVE_OF_A_KIND(7) { occurrences, jokers ->
-        return occurrences.any { it,value == (5 - jokers) }
+        return occurrences.any { it.value == (5 - jokers) }
     }
 
     FOUR_OF_A_KIND(6) { occurrences, jokers ->
