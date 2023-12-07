@@ -113,15 +113,13 @@ object Day05 {
 
         val ranges = Seed.RANGE_PATTERN.findAll(input.lines().first)
             .map { it.value.split(" ") }
-            .map { it.first.toLong()..it.first.toLong() + it.last.toLong() }
+            .map { LongRange(it.first.toLong(), it.first.toLong() + it.last.toLong()) }
             .toList()
 
         return runBlocking(Dispatchers.Default) {
             ranges
                 .pmap { range ->
-                    range.reduce { c, n ->
-                        min(Seed.parse(c, almanac).location, Seed.parse(n, almanac).location)
-                    }
+                    range.minOf { Seed.parse(it, almanac).location }
                 }
                 .min()
         }
@@ -131,7 +129,7 @@ object Day05 {
         return toDoubleOrNull() != null
     }
 
-    suspend fun <A, B> Iterable<A>.pmap(f: suspend (A) -> B): List<B> = coroutineScope {
+    private suspend fun <A, B> Iterable<A>.pmap(f: suspend (A) -> B): List<B> = coroutineScope {
         map { async { f(it) } }.awaitAll()
     }
 }
