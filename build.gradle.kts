@@ -22,7 +22,7 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
     testLogging {
-        exceptionFormat("full")
+        exceptionFormat = TestExceptionFormat.FULL
     }
 }
 
