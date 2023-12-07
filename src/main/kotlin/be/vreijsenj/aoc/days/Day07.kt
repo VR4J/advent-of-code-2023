@@ -43,8 +43,6 @@ enum class Type(val strength: Int, val isPresent: (occurrences: Map<Int, Int>, j
     TWO_PAIRS(3, { occurrences, jokers ->
         if(jokers == 0) {
             occurrences.count { it.value == 2 } == 2
-        } else if(jokers == 1) {
-            occurrences.containsValue(1) && occurrences.containsValue(2)
         } else {
             // with two or more jokers you will always have three of a kind 
             false
@@ -89,10 +87,13 @@ data class Hand(
         val occurrences = group.filter { it.key == 1 }
         val jokers = group.getOrElse(1) { 0 }
         
-        return Type.values()
+        val result = Type.values()
                    .filter { it.isPresent(occurrences, jokers) }
                    .first
-                   .strength
+        
+        print(result)
+
+        return result.strength
     }
 
     override fun compareTo(other: Hand): Int {
