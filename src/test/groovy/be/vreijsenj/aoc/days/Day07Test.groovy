@@ -48,8 +48,8 @@ class Day07Test extends Specification {
 
           when: "the games are played"
                def result = input
-                    .map { Hand.parse(it) }
-                    .map { it.result() }
+                    .collect { Hand.parse(it) }
+                    .collect { it.result() }
 
           then: "the result"
                result == []
