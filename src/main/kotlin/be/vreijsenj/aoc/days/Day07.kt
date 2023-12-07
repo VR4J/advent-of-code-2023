@@ -13,7 +13,11 @@ enum class Type(val strength: Int, val isPresent: (occurrences: Map<Int, Int>, j
         }
     }),
     FOUR_OF_A_KIND(6, { occurrences, jokers ->
-        occurrences.any { it.value == (4 - jokers) }
+        if(jokers >= 3) {
+            true
+        } else {
+            occurrences.any { it.value == (4 - jokers) }
+        }
     }),
     FULL_HOUSE(5, { occurrences, jokers ->
         if(jokers == 0) {
@@ -28,7 +32,11 @@ enum class Type(val strength: Int, val isPresent: (occurrences: Map<Int, Int>, j
         }
     }),
     THREE_OF_A_KIND(4, { occurrences, jokers ->
-        occurrences.any { it.value == (3 - jokers) }
+        if(jokers >= 2) {
+            true
+        } else {
+            occurrences.any { it.value == (3 - jokers) }
+        }
     }),
     TWO_PAIRS(3, { occurrences, jokers ->
         if(jokers == 0) {
