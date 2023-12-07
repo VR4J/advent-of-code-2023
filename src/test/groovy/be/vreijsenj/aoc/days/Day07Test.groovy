@@ -1,6 +1,6 @@
 package be.vreijsenj.aoc.days
 
-import be.vreijesnj.aoc.utils.PuzzleUtils
+import be.vreijsenj.aoc.utils.PuzzleUtils
 
 import spock.lang.Specification
 
