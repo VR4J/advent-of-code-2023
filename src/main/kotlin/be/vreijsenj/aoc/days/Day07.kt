@@ -84,7 +84,7 @@ data class Hand(
         val group = cards.groupingBy { it.value }
                          .eachCount()
 
-        val occurrences = group.filter { it.key == 1 }
+        val occurrences = group.filter { it.key != 1 }
         val jokers = group.getOrElse(1) { 0 }
         
         val result = Type.values()
