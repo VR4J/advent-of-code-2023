@@ -46,11 +46,13 @@ class Day07Test extends Specification {
                     "34781 100"
                ]
 
-          when "the games are played"
-               def result = new Day07().runPartOne(input)
+          when: "the games are played"
+               def result = input
+                    .map { Hand.parse(it) }
+                    .map { it.result() }
 
-          then "the result"
-               result == 0
+          then: "the result"
+               result == []
                
      }
 }
