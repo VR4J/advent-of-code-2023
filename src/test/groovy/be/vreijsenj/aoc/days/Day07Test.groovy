@@ -33,4 +33,24 @@ class Day07Test extends Specification {
         then: "the result matches the example answer"
             result == 5905
     }
+
+     def "returns the types for different hands"() {
+          given: "the camel card hands"
+               def input = [
+                    "JJ333 100",
+                    "J3332 100",
+                    "J3322 100",
+                    "JJ245 100",
+                    "22445 100",
+                    "J2589 100",
+                    "34781 100"
+               ]
+
+          when "the games are played"
+               def result = new Day07().runPartOne(input)
+
+          then "the result"
+               result == 0
+               
+     }
 }
