@@ -24,6 +24,7 @@ enum class Type(val strength: Int, val isPresent: (occurrences: Map<Int, Int>, j
             occurrences.containsValue(3) && occurrences.containsValue(2)
         } else if(jokers == 1) {
             occurrences.count { it.value == 2 } == 2
+                || (occurrences.count { it.value == 3 } == 1 && occurrences.count { it.value == 1 } == 1)
         } else if(jokers == 2) {
             occurrences.count { it.value == 2 } == 1
                 && occurrences.count {it.value == 1 } == 1
