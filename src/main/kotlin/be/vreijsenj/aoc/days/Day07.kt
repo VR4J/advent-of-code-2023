@@ -88,7 +88,7 @@ data class Hand(
         val jokers = group.getOrElse(1) { 0 }
         
         val result = Type.values()
-                   .sortByDescending { it.strength }
+                   .sortedByDescending { it.strength }
                    .filter { it.isPresent(occurrences, jokers) }
                    .first
         
