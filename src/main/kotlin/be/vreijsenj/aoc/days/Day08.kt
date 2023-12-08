@@ -99,7 +99,7 @@ object Day08 {
     fun runPartOne(input: List<String>): Long {
         val network = Network.parse(input)
 
-        return network.getStepDistance(network.nodes["AAA"]!!) { it.name.endsWith("Z") }
+        return network.getStepDistance(network.nodes["AAA"]!!) { it.name === "ZZZ" }
     }
 
     fun runPartTwo(input: List<String>): Long {
