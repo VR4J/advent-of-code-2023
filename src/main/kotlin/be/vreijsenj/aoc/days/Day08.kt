@@ -25,7 +25,7 @@ data class Node(val name: String, val left: String, val right: String) {
         fun parse(input: String): Node {
             val (name, nodes) = input.split(" = ")
             val (left, right) = nodes.split(", ")
-                .map { it.replace("""[()]""".toRegex(), "") }
+                                     .map { it.replace("""[()]""".toRegex(), "") }
 
             return Node(name, left, right)
         }
@@ -44,7 +44,7 @@ data class Network(val directions: List<Direction>, val nodes: Map<String, Node>
         }
     }
 
-    fun getStepDistance(start: Node, hasArrived: (Node) -> Boolean): Long {
+    fun getStepDistance(start: Node, isLast: (Node) -> Boolean): Long {
         var current = start
         var steps = 0L
 
@@ -54,11 +54,11 @@ data class Network(val directions: List<Direction>, val nodes: Map<String, Node>
             val direction = getDirection(steps)
 
             current = when(direction) {
-                Direction.LEFT -> nodes.get(current.left)!!
-                Direction.RIGHT -> nodes.get(current.right)!!
+                Direction.LEFT -> nodes[current.left]!!
+                Direction.RIGHT -> nodes[current.right]!!
             }
 
-            if(hasArrived(current)) {
+            if(isLast(current)) {
                 return steps
             }
         }
@@ -119,7 +119,7 @@ object Day08 {
         var divisor = 1L
 
         while (divisor <= left && divisor <= right ) {
-            // Checks if divisor is factor of both integers
+            // Checks if divisor is factor of both numbers
             if (left % divisor == 0L && right % divisor == 0L) {
                 gcd = divisor
             }
@@ -131,7 +131,8 @@ object Day08 {
     }
 
     /**
-     * Retrieves the Least Common Multiplier (https://en.wikipedia.org/wiki/Least_common_multiple)
+     * Retrieves the Least Common Multiple (https://en.wikipedia.org/wiki/Least_common_multiple)
+     * using the Greatest Common Divisor (https://en.wikipedia.org/wiki/Greatest_common_divisor)
      */
     private fun lcm(left: Long, right: Long): Long {
         return left * right / gcd(left, right)

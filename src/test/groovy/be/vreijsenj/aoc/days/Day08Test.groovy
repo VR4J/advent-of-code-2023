@@ -65,4 +65,28 @@ class Day08Test extends Specification {
             network.getDirection(17) == Direction.LEFT
             network.getDirection(18) == Direction.RIGHT
     }
+
+    def "calculates the least common multiple (lcm) correctly"() {
+        given: "two input numbers"
+            def left = 4
+            def right = 6
+
+        when: "the lcm is calculated"
+            def result = new Day08().lcm(left, right)
+
+        then: "the result is matches the example"
+            result == 12
+    }
+
+    def "calculates the greatest common divisor (gcd) correctly"() {
+        given: "two input numbers"
+            def left = 8
+            def right = 12
+
+        when: "the lcm is calculated"
+            def result = new Day08().gcd(left, right)
+
+        then: "the result is matches the example"
+            result == 4
+    }
 }
