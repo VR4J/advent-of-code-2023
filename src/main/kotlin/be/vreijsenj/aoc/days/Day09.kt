@@ -13,7 +13,7 @@ data class Trend(val values: MutableList<Long>) {
         }
     }
 
-    fun predict(reversed: Boolean = false): Long {
+    fun predict(): Long {
         val sequences = getLowerSequences()
 
         sequences.last.add(0)
