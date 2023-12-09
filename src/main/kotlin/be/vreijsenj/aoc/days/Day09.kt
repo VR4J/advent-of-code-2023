@@ -74,8 +74,8 @@ object Day09 {
             val resultPartOne = runPartOne(input)
             val resultPartTwo = runPartTwo(input)
 
-            println("Total steps to reach destination (pt.1): $resultPartOne")
-            println("Total steps to reach destination (pt.2): $resultPartTwo")
+            println("Sum of extrapolated values (pt.1): $resultPartOne")
+            println("Sum of extrapolated values (pt.2): $resultPartTwo")
         }
 
         println("Took: $elapsed")
