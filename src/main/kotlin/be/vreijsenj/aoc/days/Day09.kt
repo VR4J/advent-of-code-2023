@@ -3,65 +3,47 @@ package be.vreijsenj.aoc.days
 import be.vreijsenj.aoc.utils.PuzzleUtils
 import kotlin.time.measureTime
 
-data class Sequence(val values: MutableList<Long>) {
+data class Trend(val values: MutableList<Long>) {
     companion object {
         @JvmStatic
-        fun parse(line: String, reversed: Boolean): Sequence {
-            val values = line.split(" ").map { it.toLong() }.toMutableList()
-
-            return when (reversed) {
-                true -> Sequence(values = values.asReversed())
-                false -> Sequence(values = values)
-            }
+        fun parse(line: String): Trend {
+            return Trend(values = line.split(" ")
+                                      .map { it.toLong() }
+                                      .toMutableList())
         }
     }
 
-    fun isDone(): Boolean {
-        return values.all { it == 0L }
-    }
-}
-data class Trend(val values: Sequence, var sequences: MutableList<Sequence> = mutableListOf(values)) {
-
-    companion object {
-        @JvmStatic
-        fun parse(line: String, reversed: Boolean = false): Trend {
-            return Trend(values = Sequence.parse(line, reversed))
+    fun predict(reversed: Boolean = false): Long {
+        if(reversed) {
+            values.reverse()
         }
-    }
 
-    init {
-        sequences = getLowerSequences()
-    }
+        val sequences = getLowerSequences()
 
-    fun predict(): Long {
-        sequences.last.values.add(0)
+        sequences.last.add(0)
 
         sequences.asReversed()
                  .zipWithNext { current, next ->
-                     next.values.add(next.values.last + current.values.last)
+                     next.add(next.last + current.last)
                  }
 
-        return sequences.first.values.last
+        return sequences.first.last
     }
 
-    private fun getLowerSequences(): MutableList<Sequence> {
-        sequences.add(
-            getNextSequence(sequences.last)
-        )
+    private fun getLowerSequences(): MutableList<MutableList<Long>> {
+        val sequences = mutableListOf(values)
 
-        if(sequences.last.isDone()) {
-            return sequences
+        while(sequences.last.any { it != 0L }) {
+            sequences.add(
+                getNextSequence(sequences.last)
+            )
         }
 
-        return getLowerSequences()
+        return sequences
     }
 
-    private fun getNextSequence(sequence: Sequence): Sequence {
-        val differences = sequence.values.zipWithNext {
-            current, next -> next - current
-        }
-
-        return Sequence(values = differences.toMutableList())
+    private fun getNextSequence(sequence: MutableList<Long>): MutableList<Long> {
+        return sequence.zipWithNext { current, next -> next - current }.toMutableList()
     }
 }
 object Day09 {
@@ -87,7 +69,7 @@ object Day09 {
     }
 
     fun runPartTwo(input: List<String>): Long {
-        return input.map { Trend.parse(it, reversed = true) }
-            .sumOf { it.predict() }
+        return input.map { Trend.parse(it) }
+            .sumOf { it.predict(reversed = true) }
     }
 }
