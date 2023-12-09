@@ -29,7 +29,7 @@ data class Trend(val values: MutableList<Long>) {
     private fun getLowerSequences(): MutableList<MutableList<Long>> {
         val sequences = mutableListOf(values)
 
-        while(sequences.last.any { it != 0L }) {
+        while(! sequences.last.all { it == 0L }) {
             sequences.add(
                 getNextSequence(sequences.last)
             )
