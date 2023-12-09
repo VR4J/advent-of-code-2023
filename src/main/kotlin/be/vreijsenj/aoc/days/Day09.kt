@@ -14,10 +14,6 @@ data class Trend(val values: MutableList<Long>) {
     }
 
     fun predict(reversed: Boolean = false): Long {
-        if(reversed) {
-            values.reverse()
-        }
-
         val sequences = getLowerSequences()
 
         sequences.last.add(0)
@@ -70,6 +66,7 @@ object Day09 {
 
     fun runPartTwo(input: List<String>): Long {
         return input.map { Trend.parse(it) }
-            .sumOf { it.predict(reversed = true) }
+            .onEach { it.values.reverse() }
+            .sumOf { it.predict() }
     }
 }
