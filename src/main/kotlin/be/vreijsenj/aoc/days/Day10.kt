@@ -21,7 +21,7 @@ data class Edge(val start: Position, val end: Position) {
 
         // When vertical edge is exactly on start or end, move it slightly
         if(position.y == start.y || position.y == end.y) {
-            invoke(Position(position.x, position.y + epsilon))
+            return invoke(Position(position.x, position.y + epsilon))
         }
 
         // When outside vertical range, and is after horizontal range
@@ -35,8 +35,8 @@ data class Edge(val start: Position, val end: Position) {
         }
 
         // Areas
-        val blue = if (abs(start.x - position.x) > MIN_VALUE) (position.y - start.y) / (position.x - start.x) else MAX_VALUE
-        val red = if (abs(start.x - end.x) > MIN_VALUE) (end.y - start.y) / (end.x - start.x) else MAX_VALUE
+        val blue = if(abs(start.x - position.x) > MIN_VALUE) (position.y - start.y) / (position.x - start.x) else MAX_VALUE
+        val red = if(abs(start.x - end.x) > MIN_VALUE) (end.y - start.y) / (end.x - start.x) else MAX_VALUE
 
         return blue >= red
     }
