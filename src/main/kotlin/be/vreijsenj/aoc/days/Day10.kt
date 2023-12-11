@@ -13,18 +13,32 @@ data class Edge(val start: Position, val end: Position) {
      * Ray casting implementation based on polygon edges.
      * https://en.wikipedia.org/wiki/Ray_casting
      */
-    operator fun invoke(p: Position) : Boolean {
-        return when {
-            start.y > end.y -> Edge(end, start).invoke(p)
-            p.y == start.y || p.y == end.y -> invoke(Position(p.x, p.y + epsilon))
-            p.y > end.y || p.y < start.y || p.x > max(start.x, end.x) -> false
-            p.x < min(start.x, end.x) -> true
-            else -> {
-                val blue = if (abs(start.x - p.x) > MIN_VALUE) (p.y - start.y) / (p.x - start.x) else MAX_VALUE
-                val red = if (abs(start.x - end.x) > MIN_VALUE) (end.y - start.y) / (end.x - start.x) else MAX_VALUE
-                blue >= red
-            }
+    operator fun invoke(position: Position) : Boolean {
+        // Swap vertical edge
+        if(start.y > end.y) {
+            return Edge(end, start).invoke(position)
         }
+
+        // When vertical edge is exactly on start or end, move it slightly
+        if(position.y == start.y || position.y == end.y) {
+            invoke(Position(position.x, position.y + epsilon))
+        }
+
+        // When outside vertical range, and is after horizontal range
+        if(position.y > end.y || position.y < start.y || position.x > max(start.x, end.x)) {
+            return false
+        }
+
+        // When inside vertical range, and is before horizontal range
+        if(position.x < min(start.x, end.x)) {
+            return true
+        }
+
+        // Areas
+        val blue = if (abs(start.x - position.x) > MIN_VALUE) (position.y - start.y) / (position.x - start.x) else MAX_VALUE
+        val red = if (abs(start.x - end.x) > MIN_VALUE) (end.y - start.y) / (end.x - start.x) else MAX_VALUE
+
+        return blue >= red
     }
 
     private val epsilon = 0.00001
