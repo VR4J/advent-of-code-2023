@@ -4,9 +4,12 @@ import be.vreijsenj.aoc.utils.PuzzleUtils
 import kotlin.math.abs
 import kotlin.math.exp
 import kotlin.time.measureTime
+
 data class Point(val x: Long, val y: Long, val value: String)
+
 data class Image(val points: List<Point>, var galaxies: List<Point> = emptyList()) {
     companion object {
+
         @JvmStatic
         fun parse(image: List<String>, rate: Long): Image {
             val (rows, columns) = rasterize(image)
@@ -57,6 +60,7 @@ data class Image(val points: List<Point>, var galaxies: List<Point> = emptyList(
 
             return expanded
         }
+
         private fun rasterize(input: List<String>): Pair<List<List<String>>, List<List<String>>> {
             val rows = input.map { it.chunked(1) }
 
@@ -73,6 +77,7 @@ data class Image(val points: List<Point>, var galaxies: List<Point> = emptyList(
         galaxies = points.filter { it.value == "#" }
     }
 }
+
 object Day11 {
 
     @JvmStatic
