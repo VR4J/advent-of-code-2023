@@ -42,9 +42,9 @@ class Day11Test extends Specification {
             ]
 
         when: "the image is parsed"
-            def result = Image.parse(input)
+            def result = Image.parse(input, 2)
 
-        then: "the result reflects the image"
-            result.points.size() == 12 * 13
+        then: "the result reflects the image keeping the point size the same"
+            result.points.size() == 100
     }
 }
