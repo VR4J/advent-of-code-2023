@@ -32,14 +32,30 @@ class Day13Test extends Specification {
             result == 405
     }
 
-    def "returns the sum of left and upper reflections actual"() {
+    def "returns the sum of left and upper reflections fixing potential smudges"() {
         given: "the input patterns"
-        def input = PuzzleUtils.getInputAsText(13, 1)
+            def input = [
+                    "#.##..##.",
+                    "..#.##.#.",
+                    "##......#",
+                    "##......#",
+                    "..#.##.#.",
+                    "..##..##.",
+                    "#.#.##.#.",
+                    "",
+                    "#...##..#",
+                    "#....#..#",
+                    "..##..###",
+                    "#####.##.",
+                    "#####.##.",
+                    "..##..###",
+                    "#....#..#"
+            ].join("\n")
 
         when: "the reflections are calculated"
-        def result = new Day13().runPartOne(input)
+            def result = new Day13().runPartTwo(input)
 
         then: "the result matches the example answer"
-        result == 405
+            result == 400
     }
 }
