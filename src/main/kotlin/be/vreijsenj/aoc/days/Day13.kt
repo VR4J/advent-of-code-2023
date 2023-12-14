@@ -2,6 +2,7 @@ package be.vreijsenj.aoc.days
 
 import be.vreijsenj.aoc.utils.PuzzleUtils
 import kotlin.time.measureTime
+
 data class Pattern(val rows: List<String>, val columns: List<String>) {
     companion object {
 
