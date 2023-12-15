@@ -1,7 +1,10 @@
 package be.vreijsenj.aoc.days
 
 import be.vreijsenj.aoc.utils.PuzzleUtils
+import kotlin.collections.Set
 import kotlin.time.measureTime
+
+val TILT_CACHE = mutableMapOf<Pair<Set<Location>, TiltDirection>, Platform>()
 
 enum class TiltDirection {
     NORTH, WEST, SOUTH, EAST
@@ -115,6 +118,12 @@ data class Platform(var lookup: Map<Location, Rock>, var rocks: List<Rock>, var 
     }
 
     fun tilt(direction: TiltDirection): Platform {
+        val signature = Pair(lookup.keys, direction)
+
+        if(signature in TILT_CACHE) {
+            return TILT_CACHE[signature] !!
+        }
+
         val cache = lookup.toMutableMap()
         var columns = rocks.groupBy { it.x }
 
@@ -145,10 +154,14 @@ data class Platform(var lookup: Map<Location, Rock>, var rocks: List<Rock>, var 
         } while (columns != previous)
 
 
-        lookup = cache
-        rocks = columns.values.flatten()
+        val result = Platform(
+            lookup = cache,
+            rocks = columns.values.flatten()
+        )
 
-        return this
+        TILT_CACHE[signature] = result
+
+        return result
     }
 
     fun load(): Int {
