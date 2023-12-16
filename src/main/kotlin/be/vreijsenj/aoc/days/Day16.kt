@@ -53,7 +53,7 @@ data class Contraption(val points: List<Location>, val mirrors: Map<Location, St
         reflect(start, direction)
     }
 
-    fun reflect(position: Location, direction: BeamDirection) {
+    private fun reflect(position: Location, direction: BeamDirection) {
         val value = mirrors[position] ?: "."
         val next = getNextPosition(position, value, direction)
 
@@ -161,8 +161,8 @@ object Day16 {
             val resultPartOne = runPartOne(input)
             val resultPartTwo = runPartTwo(input)
 
-            println("Total load on north support beam (pt.1): $resultPartOne")
-            println("Total load on north support beam (pt.2): $resultPartTwo")
+            println("Sum of all energized tiles (pt.1): $resultPartOne")
+            println("Sum of max energized tiles (pt.2): $resultPartTwo")
         }
 
         println("Took: $elapsed")
