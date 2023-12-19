@@ -1,51 +1,35 @@
 package be.vreijsenj.aoc.days
 
+import be.vreijsenj.aoc.utils.Direction
+import be.vreijsenj.aoc.utils.Grid
+import be.vreijsenj.aoc.utils.Point
 import be.vreijsenj.aoc.utils.PuzzleUtils
 import kotlin.math.max
 import kotlin.time.measureTime
 
-enum class BeamDirection {
-    UP, LEFT, RIGHT, DOWN
-}
+val REFLECT_CACHE = mutableListOf<Pair<Point, Direction>>()
 
-val REFLECT_CACHE = mutableListOf<Pair<Location, BeamDirection>>()
-
-data class Contraption(val points: List<Location>, val mirrors: Map<Location, String>, val xMax: Int, val yMax:Int) {
-
+data class Contraption(override val points: List<Point>, val mirrors: Map<Point, Char>): Grid(points) {
     companion object {
         @JvmStatic
         fun parse(input: List<String>): Contraption {
-            val (rows, columns) = rasterize(input)
+            val mirrors = mutableMapOf<Point, Char>()
 
-            val mirrors = mutableMapOf<Location, String>()
-            val points = columns.flatMapIndexed { xIndex, column ->
-                column.mapIndexed { yIndex, value ->
-                    val point = Location(xIndex, yIndex)
+            val points = rasterize(input) { xIndex, yIndex, char ->
+                val point = Point(xIndex, yIndex)
 
-                    if(value in listOf("\\", "/", "-", "|")) {
-                        mirrors[point] = value
-                    }
-
-                    point
+                if (char in listOf('\\', '/', '-', '|')) {
+                    mirrors[point] = char
                 }
+
+                point
             }
 
-            return Contraption(points = points, mirrors = mirrors, points.maxOf { it.x }, points.maxOf { it.y })
-        }
-
-        private fun rasterize(input: List<String>): Pair<List<List<String>>, List<List<String>>> {
-            val rows = input.map { it.chunked(1) }
-
-            val columns = rows.first.indices
-                .map { xIndex ->
-                    rows.map { it[xIndex] }
-                }
-
-            return Pair(rows, columns)
+            return Contraption(points = points, mirrors = mirrors)
         }
     }
 
-    fun energize(start: Location, direction: BeamDirection) {
+    fun energize(start: Point, direction: Direction) {
         REFLECT_CACHE.add(
             Pair(start, direction)
         )
@@ -53,14 +37,14 @@ data class Contraption(val points: List<Location>, val mirrors: Map<Location, St
         reflect(start, direction)
     }
 
-    private fun reflect(position: Location, direction: BeamDirection) {
-        val value = mirrors[position] ?: "."
-        val next = getNextPosition(position, value, direction)
+    private fun reflect(point: Point, direction: Direction) {
+        val value = mirrors[point] ?: '.'
+        val next = getNextPosition(point, value, direction)
 
         next.onEach { (location, direction) ->
             val isAlreadyEnergized = REFLECT_CACHE.any { it.first == location && it.second == direction }
 
-            if(! isAlreadyEnergized) {
+            if (!isAlreadyEnergized) {
                 REFLECT_CACHE.add(
                     Pair(location, direction)
                 )
@@ -70,84 +54,74 @@ data class Contraption(val points: List<Location>, val mirrors: Map<Location, St
         }
     }
 
-    private fun getNextPosition(position: Location, value: String, direction: BeamDirection): List<Pair<Location, BeamDirection>> {
-        var result = emptyList<Pair<Location, BeamDirection>>()
+    private fun getNextPosition(point: Point, value: Char, direction: Direction): List<Pair<Point, Direction>> {
+        var result = emptyList<Pair<Point, Direction>>()
 
-        if(value == ".") {
-            val next = when(direction) {
-                BeamDirection.UP -> Location(position.x, position.y - 1)
-                BeamDirection.RIGHT -> Location(position.x + 1, position.y)
-                BeamDirection.LEFT -> Location(position.x - 1, position.y)
-                BeamDirection.DOWN -> Location(position.x, position.y + 1)
-            }
-
+        if(value == '.') {
             result = listOf(
-                Pair(next, direction)
+                Pair(point.next(direction), direction)
             )
         }
 
-        if(value == "\\") {
+        if(value == '\\') {
             val next = when(direction) {
-                BeamDirection.UP -> Pair(Location(position.x - 1, position.y), BeamDirection.LEFT)
-                BeamDirection.RIGHT -> Pair(Location(position.x, position.y + 1), BeamDirection.DOWN)
-                BeamDirection.LEFT -> Pair(Location(position.x, position.y - 1), BeamDirection.UP)
-                BeamDirection.DOWN -> Pair(Location(position.x + 1, position.y), BeamDirection.RIGHT)
+                Direction.UP -> Pair(point.left(), Direction.LEFT)
+                Direction.RIGHT -> Pair(point.bottom(), Direction.DOWN)
+                Direction.LEFT -> Pair(point.top(), Direction.UP)
+                Direction.DOWN -> Pair(point.right(), Direction.RIGHT)
             }
 
             result = listOf(next)
         }
 
-        if(value == "/") {
+        if(value == '/') {
             val next = when(direction) {
-                BeamDirection.UP -> Pair(Location(position.x + 1, position.y), BeamDirection.RIGHT)
-                BeamDirection.RIGHT -> Pair(Location(position.x, position.y - 1), BeamDirection.UP)
-                BeamDirection.LEFT -> Pair(Location(position.x, position.y + 1), BeamDirection.DOWN)
-                BeamDirection.DOWN -> Pair(Location(position.x - 1, position.y), BeamDirection.LEFT)
+                Direction.UP -> Pair(point.right(), Direction.RIGHT)
+                Direction.RIGHT -> Pair(point.top(), Direction.UP)
+                Direction.LEFT -> Pair(point.bottom(), Direction.DOWN)
+                Direction.DOWN -> Pair(point.left(), Direction.LEFT)
             }
 
             result = listOf(next)
         }
 
-        if(value == "-") {
+        if(value == '-') {
             val next = when(direction) {
-                BeamDirection.DOWN -> listOf(
-                    Pair(Location(position.x - 1, position.y), BeamDirection.LEFT),
-                    Pair(Location(position.x + 1, position.y), BeamDirection.RIGHT)
+                Direction.DOWN -> listOf(
+                    Pair(point.left(), Direction.LEFT),
+                    Pair(point.right(), Direction.RIGHT)
                 )
-                BeamDirection.UP -> listOf(
-                    Pair(Location(position.x - 1, position.y), BeamDirection.LEFT),
-                    Pair(Location(position.x + 1, position.y), BeamDirection.RIGHT)
+                Direction.UP -> listOf(
+                    Pair(point.left(), Direction.LEFT),
+                    Pair(point.right(), Direction.RIGHT)
                 )
-                BeamDirection.RIGHT -> listOf(Pair(Location(position.x + 1, position.y), direction))
-                BeamDirection.LEFT -> listOf(Pair(Location(position.x - 1, position.y), direction))
-            }
-
-            result = next
-        }
-
-        if(value == "|") {
-            val next = when(direction) {
-                BeamDirection.DOWN -> listOf(Pair(Location(position.x, position.y + 1), direction))
-                BeamDirection.UP -> listOf(Pair(Location(position.x, position.y - 1), direction))
-                BeamDirection.RIGHT -> listOf(
-                    Pair(Location(position.x, position.y - 1), BeamDirection.UP),
-                    Pair(Location(position.x, position.y + 1), BeamDirection.DOWN)
-                )
-                BeamDirection.LEFT -> listOf(
-                    Pair(Location(position.x, position.y - 1), BeamDirection.UP),
-                    Pair(Location(position.x, position.y + 1), BeamDirection.DOWN)
+                else -> listOf(
+                    Pair(point.next(direction), direction)
                 )
             }
 
             result = next
         }
 
-        return result.filter { (location, direction) ->
-            (direction == BeamDirection.UP && location.y >= 0)
-                    || (direction == BeamDirection.DOWN && location.y <= yMax)
-                    || (direction == BeamDirection.LEFT && location.x >= 0)
-                    || (direction == BeamDirection.RIGHT && location.x <= xMax)
+        if(value == '|') {
+            val next = when(direction) {
+                Direction.RIGHT -> listOf(
+                    Pair(point.top(), Direction.UP),
+                    Pair(point.bottom(), Direction.DOWN)
+                )
+                Direction.LEFT -> listOf(
+                    Pair(point.top(), Direction.UP),
+                    Pair(point.bottom(), Direction.DOWN)
+                )
+                else -> listOf(
+                    Pair(point.next(direction), direction)
+                )
+            }
+
+            result = next
         }
+
+        return result.filter { (point, _) -> point in this }
     }
 }
 
@@ -170,7 +144,7 @@ object Day16 {
 
     fun runPartOne(input: List<String>): Int {
         val contraption = Contraption.parse(input)
-        return run(contraption, 0, 0, listOf(BeamDirection.RIGHT))
+        return run(contraption, 0, 0, listOf(Direction.RIGHT))
     }
 
     fun runPartTwo(input: List<String>): Int {
@@ -183,39 +157,39 @@ object Day16 {
         }
 
         edges.onEach { (x, y) ->
-            var directions = listOf<BeamDirection>()
+            var directions = listOf<Direction>()
 
             // top left corner
             if(x == 0 && y == 0) {
-                directions = listOf(BeamDirection.DOWN, BeamDirection.RIGHT)
+                directions = listOf(Direction.DOWN, Direction.RIGHT)
 
             // top right corner
             } else if(x == contraption.xMax && y == 0) {
-                directions = listOf(BeamDirection.DOWN, BeamDirection.LEFT)
+                directions = listOf(Direction.DOWN, Direction.LEFT)
 
             // bottom left corner
             } else if(y == contraption.yMax && x == 0) {
-                directions = listOf(BeamDirection.RIGHT, BeamDirection.UP)
+                directions = listOf(Direction.RIGHT, Direction.UP)
 
             // bottom right corner
             } else if(y == contraption.yMax && x == contraption.xMax) {
-                directions = listOf(BeamDirection.LEFT, BeamDirection.UP)
+                directions = listOf(Direction.LEFT, Direction.UP)
 
             // left column
             } else if(x == 0) {
-                directions = listOf(BeamDirection.RIGHT)
+                directions = listOf(Direction.RIGHT)
 
             // top row
             } else if(y == 0) {
-                directions = listOf(BeamDirection.DOWN)
+                directions = listOf(Direction.DOWN)
 
             // right column
             } else if(x == contraption.xMax) {
-                directions = listOf(BeamDirection.LEFT)
+                directions = listOf(Direction.LEFT)
 
             // bottom row
             } else if(y == contraption.yMax) {
-                directions = listOf(BeamDirection.UP)
+                directions = listOf(Direction.UP)
             }
 
             val result = run(contraption, x, y, directions)
@@ -226,9 +200,9 @@ object Day16 {
         return max
     }
 
-    private fun run(contraption: Contraption, x: Int, y: Int, directions: List<BeamDirection>): Int {
+    private fun run(contraption: Contraption, x: Int, y: Int, directions: List<Direction>): Int {
         var result = 0
-        val start = Location(x, y)
+        val start = Point(x, y)
 
         directions.onEach { direction ->
             REFLECT_CACHE.clear()
