@@ -61,8 +61,8 @@ object Day21 {
             val resultPartOne = runPartOne(input, steps = 64)
             val resultPartTwo = runPartTwo(input, steps = 202300)
 
-            println("Sum of high and low pulses (pt.1): $resultPartOne")
-            println("Sum of high and low pulses (pt.2): $resultPartTwo")
+            println("Garden plots reachable (pt.1): $resultPartOne")
+            println("Garden plots reachable (pt.2): $resultPartTwo")
         }
 
         println("Took: $elapsed")
@@ -91,6 +91,6 @@ object Day21 {
         // -------------------------------------------------------------
         // data set of {x,y} values: {{0,a},{1,b}, {2,c}}
 
-        return 3884L + (15394L * steps) + (15286L * (steps * steps))
+        return a + (15394L * steps) + (15286L * (steps * steps))
     }
 }

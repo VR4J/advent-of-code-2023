@@ -5,7 +5,8 @@ object Arithmetic {
     /**
      * Retrieves the Greatest Common Divisor (https://en.wikipedia.org/wiki/Greatest_common_divisor)
      */
-    private fun gcd(left: Long, right: Long): Long {
+    @JvmStatic
+    fun gcd(left: Long, right: Long): Long {
         var gcd = 1L
         var divisor = 1L
 
@@ -25,6 +26,7 @@ object Arithmetic {
      * Retrieves the Least Common Multiple (https://en.wikipedia.org/wiki/Least_common_multiple)
      * using the Greatest Common Divisor (https://en.wikipedia.org/wiki/Greatest_common_divisor)
      */
+    @JvmStatic
     fun lcm(left: Long, right: Long): Long {
         return left * right / gcd(left, right)
     }

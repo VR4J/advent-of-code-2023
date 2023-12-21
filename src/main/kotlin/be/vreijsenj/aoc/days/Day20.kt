@@ -101,7 +101,7 @@ object Day20 {
             val resultPartTwo = runPartTwo(input)
 
             println("Sum of high and low pulses (pt.1): $resultPartOne")
-            println("Sum of high and low pulses (pt.2): $resultPartTwo")
+            println("Amount of button presses until machine turns on (pt.2): $resultPartTwo")
         }
 
         println("Took: $elapsed")
