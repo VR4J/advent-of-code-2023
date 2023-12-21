@@ -7,6 +7,13 @@ data class Point(val x: Int, val y: Int) {
     fun left() = Point(x - 1, y)
     fun bottom() = Point(x, y + 1)
 
+    fun relative(xMax: Int, yMax: Int): Point {
+        return Point(
+            (x).mod(xMax + 1),
+            (y).mod(yMax + 1)
+        )
+    }
+
     fun neighbours(): List<Point> {
         return listOf(top(), right(), left(), bottom())
     }

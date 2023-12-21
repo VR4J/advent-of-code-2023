@@ -13,6 +13,10 @@ open class Grid(
             return Grid(emptyList(), xMin, xMax, yMin, yMax)
         }
 
+        fun rasterize(input: List<String>): List<Point> {
+            return rasterize(input) { x, y, _ -> Point(x, y) }
+        }
+
         fun <T> rasterize(input: List<String>, transformer: (Int, Int, Char) -> T): List<T> {
             val rows = input.map { it.toCharArray() }
 
@@ -22,10 +26,6 @@ open class Grid(
                         transformer(xIndex, yIndex, row[xIndex])
                     }
                 }
-        }
-
-        fun rasterize(input: List<String>): List<Point> {
-            return rasterize(input) { x, y, _ -> Point(x, y) }
         }
     }
 
