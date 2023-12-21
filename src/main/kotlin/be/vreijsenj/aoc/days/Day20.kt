@@ -1,5 +1,6 @@
 package be.vreijsenj.aoc.days
 
+import be.vreijsenj.aoc.utils.Arithmetic.lcm
 import be.vreijsenj.aoc.utils.PuzzleUtils
 import java.util.*
 import kotlin.time.measureTime
@@ -128,10 +129,41 @@ object Day20 {
     }
 
     fun runPartTwo(input: List<String>): Long {
-        return 0L
+        val modules = input.map { Module.parse(it) }
+        val registry = modules.map { it.init(modules) }.associateBy { it.name }
+
+        val broadcaster = registry.values.first { it is Broadcaster }
+
+        val rxSource = registry.entries.first { (name, module) -> "rx" in module.destinations } // jq
+        val rxInputSources = registry.entries
+            .filter { (_, module) -> rxSource.key in module.destinations }
+            .associate { (name, _) -> name to 0L }
+            .toMutableMap()
+
+        var presses = 0L
+
+        // Continue till all input sources have given a high pulse
+        while(rxInputSources.values.any { it == 0L }) {
+            presses++
+
+            val queue: Queue<Action> = LinkedList(
+                listOf(Action("button", mapOf(broadcaster.name to Pulse.LOW)))
+            )
+
+            while(queue.isNotEmpty()) {
+                send(queue, registry, mutableMapOf())
+
+                queue
+                    .filter { it.sender in rxInputSources }
+                    .filter { Pulse.HIGH in it.pulses.values }
+                    .onEach { rxInputSources[it.sender] = presses }
+            }
+        }
+
+        return rxInputSources.values.reduce(::lcm)
     }
 
-    fun send(queue: Queue<Action>, modules: Map<String, Module>, pulses: MutableMap<Pulse, Long>) {
+    private fun send(queue: Queue<Action>, modules: Map<String, Module>, pulses: MutableMap<Pulse, Long>) {
         val action = queue.remove()
 
         action.pulses.values.onEach { pulse ->
@@ -139,7 +171,7 @@ object Day20 {
         }
 
         action.pulses.entries
-            .filter { (destination, pulse) -> destination in modules }
+            .filter { (destination, _) -> destination in modules }
             .map { (destination, pulse) ->
                 val next = modules.getValue(destination)
                     .receive(action.sender, pulse)

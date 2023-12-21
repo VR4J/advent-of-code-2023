@@ -1,5 +1,6 @@
 package be.vreijsenj.aoc.days
 
+import be.vreijsenj.aoc.utils.Arithmetic.lcm
 import be.vreijsenj.aoc.utils.PuzzleUtils
 import kotlin.math.floor
 import kotlin.time.measureTime
@@ -108,33 +109,6 @@ object Day08 {
         return network.nodes
             .filter { it.key.endsWith("A") }
             .map { network.getStepDistance(it.value) { node -> node.name.endsWith("Z") } }
-            .reduce(this::lcm)
-    }
-
-    /**
-     * Retrieves the Greatest Common Divisor (https://en.wikipedia.org/wiki/Greatest_common_divisor)
-     */
-    private fun gcd(left: Long, right: Long): Long {
-        var gcd = 1L
-        var divisor = 1L
-
-        while (divisor <= left && divisor <= right ) {
-            // Checks if divisor is factor of both numbers
-            if (left % divisor == 0L && right % divisor == 0L) {
-                gcd = divisor
-            }
-
-            ++divisor
-        }
-
-        return gcd
-    }
-
-    /**
-     * Retrieves the Least Common Multiple (https://en.wikipedia.org/wiki/Least_common_multiple)
-     * using the Greatest Common Divisor (https://en.wikipedia.org/wiki/Greatest_common_divisor)
-     */
-    private fun lcm(left: Long, right: Long): Long {
-        return left * right / gcd(left, right)
+            .reduce(::lcm)
     }
 }
