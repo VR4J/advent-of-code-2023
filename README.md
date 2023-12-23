@@ -26,3 +26,4 @@ Written in [Kotlin](https://kotlinlang.org/).
 * Day 20 ([source](./src/main/kotlin/be/vreijsenj/aoc/days/Day20.kt), [test](./src/test/groovy/be/vreijsenj/aoc/days/Day20Test.groovy))
 * Day 21 ([source](./src/main/kotlin/be/vreijsenj/aoc/days/Day21.kt), [test](./src/test/groovy/be/vreijsenj/aoc/days/Day21Test.groovy))
 * Day 22 ([source](./src/main/kotlin/be/vreijsenj/aoc/days/Day22.kt), [test](./src/test/groovy/be/vreijsenj/aoc/days/Day22Test.groovy))
+* Day 23 ([source](./src/main/kotlin/be/vreijsenj/aoc/days/Day23.kt), [test](./src/test/groovy/be/vreijsenj/aoc/days/Day23Test.groovy))
