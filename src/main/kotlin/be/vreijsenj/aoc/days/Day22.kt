@@ -54,8 +54,8 @@ object Day22 {
             val resultPartOne = runPartOne(input)
             val resultPartTwo = runPartTwo(input)
 
-            println("<desc> (pt.1): $resultPartOne")
-            println("<desc> (pt.2): $resultPartTwo")
+            println("Amount of blocks that can be disintegrated safely (pt.1): $resultPartOne")
+            println("Amount of blocks that will fall when disintegrated (pt.2): $resultPartTwo")
         }
 
         println("Took: $elapsed")
