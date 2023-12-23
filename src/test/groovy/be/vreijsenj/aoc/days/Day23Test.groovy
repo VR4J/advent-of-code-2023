@@ -68,7 +68,7 @@ class Day23Test extends Specification {
         ]
 
         when: "evaluating all routes"
-        def result = new Day23().runPartOne(input)
+        def result = new Day23().runPartTwo(input)
 
         then: "the result matches the example answer"
         result == 154
