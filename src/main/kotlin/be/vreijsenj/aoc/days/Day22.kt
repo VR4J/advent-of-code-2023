@@ -17,7 +17,7 @@ data class Brick(var cubes: List<Cube>) {
             val cubes = (xStart..xEnd).flatMap { x ->
                 (yStart..yEnd).flatMap { y ->
                     (zStart..zEnd).map { z ->
-                        Cube(x, y, z)
+                        Cube(x.toDouble(), y.toDouble(), z.toDouble())
                     }
                 }
             }
