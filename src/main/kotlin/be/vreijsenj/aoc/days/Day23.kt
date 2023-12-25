@@ -131,11 +131,9 @@ object Day23 {
             val input = PuzzleUtils.getInput(23, 1)
 
             val resultPartOne = runPartOne(input)
-
-            println("Longest path (pt.1): $resultPartOne")
-
             val resultPartTwo = runPartTwo(input)
 
+            println("Longest path (pt.1): $resultPartOne")
             println("Longest path (pt.2): $resultPartTwo")
         }
 

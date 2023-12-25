@@ -16,6 +16,7 @@ dependencies {
     implementation("org.apache.groovy:groovy:4.0.16")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("tools.aqua:z3-turnkey:4.12.2.1")
+    implementation("org.jgrapht:jgrapht-core:1.5.2")
 
     testImplementation(kotlin("test"))
     testImplementation("org.spockframework:spock-core:2.3-groovy-4.0")

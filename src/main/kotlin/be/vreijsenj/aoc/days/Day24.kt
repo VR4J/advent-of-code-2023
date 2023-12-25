@@ -30,11 +30,9 @@ object Day24 {
             val input = PuzzleUtils.getInput(24, 1)
 
             val resultPartOne = runPartOne(input, 200000000000000.0, 400000000000000.0)
+            val resultPartTwo = runPartTwo(input)
 
             println("Amount of intersections within test area (pt.1): $resultPartOne")
-
-            val resultPartTwo = runPartTwo(input    )
-
             println("Amount of intersections within test area (pt.2): $resultPartTwo")
         }
 
